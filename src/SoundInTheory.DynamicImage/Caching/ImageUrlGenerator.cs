@@ -10,7 +10,7 @@ namespace SoundInTheory.DynamicImage.Caching
 			string cacheKey = composition.GetCacheKey();
 
 			if (DynamicImageCacheManager.Exists(cacheKey))
-				return GetUrl(cacheKey, DynamicImageCacheManager.GetProperties(cacheKey));
+				return GetUrl(cacheKey, composition.ImageFormat);
 
 			GeneratedImage generatedImage = composition.GenerateImage();
 			if (generatedImage.Properties.IsImagePresent || DynamicImageCacheManager.StoreMissingImagesInCache)
@@ -18,13 +18,13 @@ namespace SoundInTheory.DynamicImage.Caching
 				Dependency[] dependencies = composition.GetDependencies().Distinct().ToArray();
 				DynamicImageCacheManager.Add(cacheKey, generatedImage, dependencies);
 			}
-			return GetUrl(cacheKey, generatedImage.Properties);
+			return GetUrl(cacheKey, generatedImage.Properties.Format);
 		}
 
-		private static string GetUrl(string cacheKey, ImageProperties imageProperties)
+		private static string GetUrl(string cacheKey, DynamicImageFormat imageFormat)
 		{
 			const string path = "~/Assets/Images/DynamicImages/";
-			string fileName = string.Format("{0}.{1}", cacheKey, imageProperties.FileExtension);
+			string fileName = string.Format("{0}.{1}", cacheKey, ImageProperties.FormatToFileExtension(imageFormat));
 			return VirtualPathUtility.ToAbsolute(path) + fileName;
 		}
 	}
