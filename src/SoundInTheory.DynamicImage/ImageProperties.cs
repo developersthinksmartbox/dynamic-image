@@ -31,27 +31,26 @@ namespace SoundInTheory.DynamicImage
 
 			return encoder;
 		}
+		
+		public string FileExtension => FormatToFileExtension(Format);
 
 		/// <summary>
 		/// Gets the file extension, not including a '.'
 		/// </summary>
-		public string FileExtension
+		public static string FormatToFileExtension(DynamicImageFormat format)
 		{
-			get
+			switch (format)
 			{
-				switch (Format)
-				{
-					case DynamicImageFormat.Bmp:
-						return "bmp";
-					case DynamicImageFormat.Gif:
-						return "gif";
-					case DynamicImageFormat.Jpeg:
-						return "jpg";
-					case DynamicImageFormat.Png:
-						return "png";
-					default:
-						throw new InvalidOperationException("Unrecognised DynamicImageFormat");
-				}
+				case DynamicImageFormat.Bmp:
+					return "bmp";
+				case DynamicImageFormat.Gif:
+					return "gif";
+				case DynamicImageFormat.Jpeg:
+					return "jpg";
+				case DynamicImageFormat.Png:
+					return "png";
+				default:
+					throw new InvalidOperationException("Unrecognised DynamicImageFormat");
 			}
 		}
 
